@@ -7,7 +7,7 @@ bootstrap = Bootstrap5(app)
 
 
 @app.context_processor
-def inject_stage_and_region():
+def inject_admin_phone():
     return {'ADMIN_PHONE_NUM': os.environ.get("ADMIN_PHONE")}
 
 
