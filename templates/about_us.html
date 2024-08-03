@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Правила та умови{% endblock %}
+{% block title %}Про нас{% endblock %}
 
 {% block content %}
 <header class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -21,10 +21,10 @@
                     <a class="nav-link" href="{{ url_for('all_cars') }}">Перелік авто</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('rules_n_terms') }}">Правила та умови</a>
+                    <a class="nav-link" href="{{ url_for('rules_n_terms') }}">Правила та умови</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('about_us') }}">Про нас</a>
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('about_us') }}">Про нас</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -44,27 +44,33 @@
 </header>
 
 <main style="background-image: url({{ url_for('static', filename='img/bg2.jpg') }});">
-    <div class="container-xxl py-5 d-flex justify-content-center">
-        <div class="card bg-warning border-black col-lg-9">
-            <img src="{{ url_for('static', filename='img/rules_n_terms.jpg') }}" class="card-img-top" alt="Rules accepting">
-            <div class="card-body">
-                <p class="card-text"><strong>Правила та умови оренди автомобілів є важливою частиною нашого сайту. Перед тим, як здійснити оренду, ми радимо уважно прочитати наступні правила та умови:</strong></p>
+    <div class="container pt-5 pb-4">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="bd-content text-center">
+                    <p class="bg-light p-2 border border-secondary rounded">
+                        Ласкаво просимо в RivneRent. Наша компанія - це надійний партнер для ваших подорожей. Ми пропонуємо широкий вибір автомобілів для оренди, починаючи від економ-класу та закінчуючи преміум-автомобілями.
+                    </p>
+                    <p class="bg-light p-2 border border-secondary rounded">
+                        Ми знаємо, що ваш час та комфорт є важливими, тому ми прагнемо забезпечити нашим клієнтам максимальний комфорт та зручність. Наші автомобілі завжди знаходяться в ідеальному технічному стані, завдяки регулярним технічним обслуговуванням та перевіркам перед кожною орендою.
+                    </p>
+                    <p class="bg-light p-2 border border-secondary rounded">
+                        Наша місія полягає в забезпеченні найкращого досвіду оренди автомобілів для наших клієнтів. Ми докладаємо максимум зусиль, щоб зробити процес оренди максимально простим та зручним. Ми завжди готові допомогти нашим клієнтам, надаючи їм інформацію та поради про найбільш підходящий автомобіль для їхніх потреб.
+                    </p>
+                    <p class="bg-light p-2 border border-secondary rounded">
+                        Наша компанія має довголітній досвід в галузі оренди автомобілів та ми завжди раді бачити повертаючихся клієнтів. Ми дуже вдячні за довіру наших клієнтів та завжди готові підтримати їхні подорожі в будь-який час. Якщо у вас є будь-які запитання щодо нашої компанії або послуг, будь ласка, зв'яжіться з нашою службою підтримки клієнтів, і ми з радістю допоможемо вам.
+                    </p>
+                </div>
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item list-group-item-warning">⚠️Вік та досвід водіння: для оренди автомобіля потрібно мати не менше 21 року та водійський стаж не менше 2 років. Деякі категорії автомобілів можуть вимагати більш високого віку та досвіду водіння.</li>
-                <li class="list-group-item list-group-item-warning">⚠️Оформлення: для оренди автомобіля потрібно надати водійські права та документ, що підтверджує особисті дані. Ми приймаємо кредитні картки та готівку для забезпечення оренди.</li>
-                <li class="list-group-item list-group-item-warning">⚠️Повернення автомобіля: автомобіль повинен бути повернутий в тому ж стані, в якому він був орендований. Якщо автомобіль повернутий з пошкодженням, клієнт несе відповідальність за відшкодування витрат на ремонт.</li>
-                <li class="list-group-item list-group-item-warning">⚠️Орендна плата та штрафи: орендна плата розраховується за кількість днів, на які було орендовано автомобіль. Заборонено перевищувати термін оренди без додаткової угоди. У випадку порушення умов оренди, клієнт може бути позбавлений права користування автомобілем та сплачувати штраф.</li>
-                <li class="list-group-item list-group-item-warning">⚠️Страхування: всі наші автомобілі застраховані від аварій, крадіжки та інших непередбачуваних ситуацій. Проте, клієнт несе відповідальність за будь-які пошкодження, які виникли через його</li>
-                <li class="list-group-item list-group-item-warning">⚠️Обмеження пробігу: ми можемо застосовувати обмеження пробігу для наших автомобілів. У разі перевищення обмеження пробігу, клієнт може сплачувати додаткову плату за кожен додатковий кілометр.</li>
-                <li class="list-group-item list-group-item-warning">⚠️Відмова від оренди: ми залишаємо за собою право відмовити в оренді автомобіля без пояснення причин. Ми можемо відхилити оренду, якщо клієнт не відповідає вимогам віку та досвіду водіння, або якщо він не може надати достатній документації.</li>
-                <li class="list-group-item list-group-item-warning">⚠️Зміни умов: ми можемо змінити правила та умови в будь-який час. Ми будемо повідомляти клієнтів про будь-які зміни в умовах оренди.</li>
-                <li class="list-group-item list-group-item-warning">⚠️Клієнт може оформити прокат, дата отримання авто в якому - поточний день, до 20:00 поточного дня. Після 20:00 можливе оформлення прокату лише з отриманням авто не раніше, ніж наступного дня.</li>
-                <li class="list-group-item list-group-item-warning">⚠️В день повернення авто клієнт повинен повернути авто не пізніше, ніж 20:30. В разі форс-мажорних обставин клієнт мусить повідомити нас, інакше о 20:30 в день повернення авто буде дистанційно заглушено, а клієнт буде покараний штрафом, розмір якого залежить від конкретного автомобіля та місця зупинки.</li>
-            </ul>
+            <div class="col-lg-6">
+                <div class="ratio ratio-4x3 p-4">
+                    <div class="p-4 bg-light d-flex border border-secondary rounded">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d162039.56949946727!2d26.079361271117456!3d50.61098520329185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x472f6caa2d7c89d7%3A0x27481abdbc4e484!2z0KDRltCy0L3QtSwg0KDRltCy0L3QtdC90YHRjNC60LAg0L7QsdC70LDRgdGC0Yw!5e0!3m2!1suk!2sua!4v1700578100492!5m2!1suk!2sua" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" width="100%"></iframe>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
 </main>
 
 <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top bg-dark text-light">

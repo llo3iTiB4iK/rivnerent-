@@ -5,6 +5,11 @@ app = Flask(__name__)
 bootstrap = Bootstrap5(app)
 
 
+@app.context_processor
+def inject_stage_and_region():
+    return {'ADMIN_PHONE_NUM': '+380673797756'}
+
+
 @app.route("/")
 def home():
     return render_template("index.html")

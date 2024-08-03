@@ -3,20 +3,6 @@
 {% block title %}RivneRent{% endblock %}
 
 {% block content %}
-<style>
-    html, body {
-        height: 100%;
-    }
-    body {
-        display: flex;
-        flex-direction: column;
-    }
-    main {
-        flex: 1;
-        background-image: url("{{ url_for('static', filename='img/bg1.jpeg') }}");
-    }
-</style>
-
 <header class="navbar navbar-expand-lg navbar-dark bg-dark">
     <nav class="container-xxl flex-wrap flex-md-nowrap bg-dark">
         <a class="navbar-brand" href="{{ url_for('home') }}">
@@ -48,13 +34,16 @@
                         <li><a class="dropdown-item" href="{{ url_for('login') }}">Вхід</a></li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="tel:{{ ADMIN_PHONE_NUM }}" class="nav-link active">📞</a>
+                </li>
             </ul>
             <span class="navbar-text">Оренда автомобілів у місті Рівне</span>
         </div>
     </nav>
 </header>
 
-<main>
+<main style="background-image: url({{ url_for('static', filename='img/bg1.jpeg') }});">
     <div class="px-4 pt-5 text-center border-bottom">
         <h1 class="display-4 fw-bold">Вітаємо на сайті RivneRent!</h1>
         <div class="col-lg-6 mx-auto">

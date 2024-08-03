@@ -8,6 +8,20 @@
         {% block styles %}
             <!-- Bootstrap CSS -->
             {{ bootstrap.load_css() }}
+        <!-- Custom CSS -->
+        <style>
+            html, body {
+                height: 100%;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+            }
+            main {
+                flex: 1;
+                background-image: url("{{ url_for('static', filename='img/bg1.jpeg') }}");
+            }
+        </style>
         {% endblock %}
 
         <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
