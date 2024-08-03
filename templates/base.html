@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="uk">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="author" content="Ляля Іван">
+
+        {% block styles %}
+            <!-- Bootstrap CSS -->
+            {{ bootstrap.load_css() }}
+        {% endblock %}
+
+        <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        <!-- Your page content -->
+        {% block content %}{% endblock %}
+
+        {% block scripts %}
+            <!-- Bootstrap JavaScript -->
+            {{ bootstrap.load_js() }}
+        {% endblock %}
+    </body>
+</html>
