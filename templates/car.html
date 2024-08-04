@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Наші авто{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<main class="bg-dark text-white">
+    <div class="container mt-5 mb-4 text-center">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-9 col-xl-7 mb-5">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/2021_Toyota_Land_Cruiser_300_3.4_ZX_%28Colombia%29_front_view_04.png/800px-2021_Toyota_Land_Cruiser_300_3.4_ZX_%28Colombia%29_front_view_04.png" alt="car image" width="100%">
+            </div>
+            <div class="col-lg-9 col-xl-5 border border-success rounded d-flex flex-column justify-content-center p-4 mb-5">
+                <h1 class="mb-4 h1">Toyota Land Cruiser</h1>
+                <table class="table table-bordered table-dark text-center">
+                    <tr>
+                        <td><img src="{{ url_for('static', filename='img/car_specifications/engine.svg') }}" alt="engine icon"></td>
+                        <td><img src="{{ url_for('static', filename='img/car_specifications/fuel.svg') }}" alt="fuel icon"></td>
+                        <td><img src="{{ url_for('static', filename='img/car_specifications/transmission.svg') }}" alt="transmission icon"></td>
+                        <td><img src="{{ url_for('static', filename='img/car_specifications/passenger.svg') }}" alt="passenger icon"></td>
+                    </tr>
+                    <tr>
+                        <td>4.0</td>
+                        <td>Бензин</td>
+                        <td>Автомат</td>
+                        <td>7</td>
+                    </tr>
+                </table>
+                <p class="mb-4 fs-6">
+                    <i>Потужний та надійний позашляховик, який ідеально підходить для великої сім'ї. Цей автомобіль стане вашим надійним супутником для поїздок на природу та далеких подорожей на відпочинок.</i>
+                </p>
+                <div>
+                    <button type="button" class="btn btn-success fs-6">Обрати дати прокату</button>
+                    <a class="btn btn-outline-light fs-6 mx-3" href="#">Більше про авто</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mb-5 pt-4 pb-5 w-75">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-6">
+                <h3 class="mb-3 fs-2">
+                    ЦІНИ НА ПРОКАТ
+                </h3>
+                <h4 class="mb-5 fs-6">
+                    *Нижче Ви можете ознайомитись з вартістю прокату даного автомобіля! Усі ціни вказані за добу прокату! Завдаток вноситься перед здійсненням прокату та повертається у повному обсязі, якщо клієнт не порушив правил прокату!
+                </h4>
+            </div>
+        </div>
+
+        <div class="row justify-content-center g-5">
+            <div class="col-lg-6 px-5">
+                <div class="row border-bottom">
+                    <div class="col-6">
+                        <h4 class="card-title display-7">1-3 ДІБ</h4>
+                        <p class="mb-1 display-7">Термін прокату</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="display-6 text-end">1400₴</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 px-5">
+                <div class="row border-bottom">
+                    <div class="col-6">
+                        <h4 class="card-title display-7">4-9 ДІБ</h4>
+                        <p class="mb-1 display-7">Термін прокату</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="display-6 text-end">1250₴</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 px-5">
+                <div class="row border-bottom">
+                    <div class="col-6">
+                        <h4 class="card-title display-7">10-25 ДІБ</h4>
+                        <p class="mb-1 display-7">Термін прокату</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="display-6 text-end">1100₴</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 px-5">
+                <div class="row border-bottom">
+                    <div class="col-6">
+                        <h4 class="card-title display-7">26-89 ДІБ</h4>
+                        <p class="mb-1 display-7">Термін прокату</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="display-6 text-end">900₴</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 px-5">
+                <div class="row border-bottom">
+                    <div class="col-6">
+                        <h4 class="card-title display-6">ЗАВДАТОК</h4>
+                    </div>
+                    <div class="col-6">
+                        <p class="display-6 text-end">10000₴</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% include 'footer.html' %}
+{% endblock %}

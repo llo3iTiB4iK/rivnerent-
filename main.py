@@ -28,8 +28,8 @@ def load_user(user_id):
 
 # Клас користувача для Flask-Login
 class User(UserMixin):
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, id_):
+        self.id = id_
 
 
 @app.context_processor
@@ -59,6 +59,12 @@ def home():
 @app.route("/cars/")
 def all_cars():
     return render_template("cars.html", active_page='cars')
+
+
+@app.route("/cars/<car_name>")
+def show_car(car_name):
+    car_name.split('-')
+    return render_template("car.html", active_page='cars')
 
 
 @app.route("/rules/")
