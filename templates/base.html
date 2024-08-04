@@ -19,7 +19,6 @@
             }
             main {
                 flex: 1;
-                background-image: url("{{ url_for('static', filename='img/bg1.jpeg') }}");
             }
         </style>
         {% endblock %}
@@ -29,7 +28,7 @@
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body>
-        <!-- Your page content -->
+        <!-- Page content -->
         {% block content %}{% endblock %}
 
         {% block scripts %}

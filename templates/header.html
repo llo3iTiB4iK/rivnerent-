@@ -1,0 +1,43 @@
+<header class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="container-xxl flex-wrap flex-md-nowrap bg-dark">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='favicon.png') }}" alt="RivneRent icon" width="30" height="30" class="d-inline-block align-text-top">
+            RivneRent
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'home' %}active{% endif %}" href="{{ url_for('home') }}">Головна</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'cars' %}active{% endif %}" href="{{ url_for('all_cars') }}">Перелік авто</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'rules' %}active{% endif %}" href="{{ url_for('rules_n_terms') }}">Правила та умови</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'about' %}active{% endif %}" href="{{ url_for('about_us') }}">Про нас</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Для персоналу
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if current_user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Вихід</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item" href="{{ url_for('login') }}">Вхід</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="tel:{{ ADMIN_PHONE_NUM }}" class="nav-link active">📞</a>
+                </li>
+            </ul>
+            <span class="navbar-text">Оренда автомобілів у місті Рівне</span>
+        </div>
+    </nav>
+</header>

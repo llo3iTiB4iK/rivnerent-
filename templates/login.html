@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Вхід{% endblock %}
+
+{% block content %}
+<main class="text-center bg-dark text-white d-flex justify-content-center">
+    <form style="width: 100%; max-width: 330px; margin: auto;" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <img class="mb-4" src="{{ url_for('static', filename='favicon.png') }}" alt="RivneRent icon" width="72" height="72">
+        <h1 class="h3 mb-3 fw-normal">Увійти як адміністратор</h1>
+
+        <div class="form-floating text-dark">
+            {{ form.login(class_="form-control") }}
+            {{ form.login.label(class_="form-label") }}
+            {% for error in form.login.errors %}
+                <div class="text-danger mb-3">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="form-floating text-dark">
+            {{ form.password(class_="form-control") }}
+            {{ form.password.label(class_="form-label") }}
+            {% for error in form.password.errors %}
+                <div class="text-danger mb-3">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="checkbox mb-3">
+            <label>
+                {{ form.remember_me() }}
+                {{ form.remember_me.label }}
+            </label>
+        </div>
+        {{ form.submit(class="w-100 btn btn-lg btn-primary") }}
+        <p class="mt-5 mb-3 text-light">© 2024</p>
+    </form>
+</main>
+{% endblock %}
