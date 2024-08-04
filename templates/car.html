@@ -9,10 +9,10 @@
     <div class="container mt-5 mb-4 text-center">
         <div class="row d-flex justify-content-center">
             <div class="col-lg-9 col-xl-7 mb-5">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/2021_Toyota_Land_Cruiser_300_3.4_ZX_%28Colombia%29_front_view_04.png/800px-2021_Toyota_Land_Cruiser_300_3.4_ZX_%28Colombia%29_front_view_04.png" alt="car image" width="100%">
+                <img src="{{ car.img_url }}" alt="Image of {{ car.name }}" width="100%">
             </div>
             <div class="col-lg-9 col-xl-5 border border-success rounded d-flex flex-column justify-content-center p-4 mb-5">
-                <h1 class="mb-4 h1">Toyota Land Cruiser</h1>
+                <h1 class="mb-4 h1">{{ car.name }}</h1>
                 <table class="table table-bordered table-dark text-center">
                     <tr>
                         <td><img src="{{ url_for('static', filename='img/car_specifications/engine.svg') }}" alt="engine icon"></td>
@@ -21,18 +21,18 @@
                         <td><img src="{{ url_for('static', filename='img/car_specifications/passenger.svg') }}" alt="passenger icon"></td>
                     </tr>
                     <tr>
-                        <td>4.0</td>
-                        <td>Бензин</td>
-                        <td>Автомат</td>
-                        <td>7</td>
+                        <td>{{ car.engine_size }} л.</td>
+                        <td>{{ car.fuel_type.value }}</td>
+                        <td>{{ car.transmission.value }}</td>
+                        <td>{{ car.seats }} місць</td>
                     </tr>
                 </table>
                 <p class="mb-4 fs-6">
-                    <i>Потужний та надійний позашляховик, який ідеально підходить для великої сім'ї. Цей автомобіль стане вашим надійним супутником для поїздок на природу та далеких подорожей на відпочинок.</i>
+                    <i>{{ car.description }}</i>
                 </p>
                 <div>
                     <button type="button" class="btn btn-success fs-6">Обрати дати прокату</button>
-                    <a class="btn btn-outline-light fs-6 mx-3" href="#">Більше про авто</a>
+                    <a class="btn btn-outline-light fs-6 mx-3" href="{{ car.info_url }}" target="_blank">Більше про авто</a>
                 </div>
             </div>
         </div>
@@ -51,53 +51,19 @@
         </div>
 
         <div class="row justify-content-center g-5">
+            {% for period, price in {"1-3 ДІБ": car.price_1to3, "4-9 ДІБ": car.price_4to9, "10-25 ДІБ": car.price_10to25, "26-89 ДІБ": car.price_26to89}.items() %}
             <div class="col-lg-6 px-5">
                 <div class="row border-bottom">
                     <div class="col-6">
-                        <h4 class="card-title display-7">1-3 ДІБ</h4>
+                        <h4 class="card-title display-7">{{ period }}</h4>
                         <p class="mb-1 display-7">Термін прокату</p>
                     </div>
                     <div class="col-6">
-                        <p class="display-6 text-end">1400₴</p>
+                        <p class="display-6 text-end">{{ price }}</p>
                     </div>
                 </div>
             </div>
-
-            <div class="col-lg-6 px-5">
-                <div class="row border-bottom">
-                    <div class="col-6">
-                        <h4 class="card-title display-7">4-9 ДІБ</h4>
-                        <p class="mb-1 display-7">Термін прокату</p>
-                    </div>
-                    <div class="col-6">
-                        <p class="display-6 text-end">1250₴</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6 px-5">
-                <div class="row border-bottom">
-                    <div class="col-6">
-                        <h4 class="card-title display-7">10-25 ДІБ</h4>
-                        <p class="mb-1 display-7">Термін прокату</p>
-                    </div>
-                    <div class="col-6">
-                        <p class="display-6 text-end">1100₴</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6 px-5">
-                <div class="row border-bottom">
-                    <div class="col-6">
-                        <h4 class="card-title display-7">26-89 ДІБ</h4>
-                        <p class="mb-1 display-7">Термін прокату</p>
-                    </div>
-                    <div class="col-6">
-                        <p class="display-6 text-end">900₴</p>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
 
             <div class="col-lg-6 px-5">
                 <div class="row border-bottom">
@@ -105,7 +71,7 @@
                         <h4 class="card-title display-6">ЗАВДАТОК</h4>
                     </div>
                     <div class="col-6">
-                        <p class="display-6 text-end">10000₴</p>
+                        <p class="display-6 text-end">{{ car.deposit }}</p>
                     </div>
                 </div>
             </div>

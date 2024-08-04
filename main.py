@@ -1,10 +1,14 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, abort
 from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy import Integer, String, Enum, Text, Float, CheckConstraint
+import enum
 import os
 
 app = Flask(__name__)
@@ -30,6 +34,62 @@ def load_user(user_id):
 class User(UserMixin):
     def __init__(self, id_):
         self.id = id_
+
+
+# Налаштування БД
+class Base(DeclarativeBase):
+    pass
+
+
+# Підключення до БД
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cars.db'
+db = SQLAlchemy(model_class=Base)
+db.init_app(app)
+
+
+# Налаштування таблиці Автомобілів
+class CarCategoryEnum(enum.Enum):
+    econom = "Бюджетні"
+    comfort = "Комфорт"
+    crossover = "Кросовери"
+    business = "Бізнес"
+    premium = "Преміум 4х4"
+    bus = "Мікроавтобуси"
+
+
+class FuelTypeEnum(enum.Enum):
+    petrol = "Бензин"
+    gas = "Газ/Бензин"
+    diesel = "Дизель"
+    hybrid = "Гібрид"
+
+
+class TransmissionEnum(enum.Enum):
+    manual = "Механіка"
+    automatic = "Автомат"
+
+
+class Car(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
+    category: Mapped[CarCategoryEnum] = mapped_column(Enum(CarCategoryEnum), nullable=False)
+    img_url: Mapped[str] = mapped_column(String(500), nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    engine_size: Mapped[float] = mapped_column(Float, nullable=False)
+    fuel_type: Mapped[FuelTypeEnum] = mapped_column(Enum(FuelTypeEnum), nullable=False)
+    transmission: Mapped[TransmissionEnum] = mapped_column(Enum(TransmissionEnum), nullable=False)
+    seats: Mapped[int] = mapped_column(Integer, CheckConstraint('seats > 0'), nullable=False)
+    info_url: Mapped[str] = mapped_column(String(500), nullable=False)
+    price_1to3: Mapped[str] = mapped_column(String(20), nullable=False)
+    price_4to9: Mapped[str] = mapped_column(String(20), nullable=False)
+    price_10to25: Mapped[str] = mapped_column(String(20), nullable=False)
+    price_26to89: Mapped[str] = mapped_column(String(20), nullable=False)
+    deposit: Mapped[str] = mapped_column(String(20), nullable=False)
+
+
+# Створення БД (якщо не існує)
+with app.app_context():
+    db.create_all()
 
 
 @app.context_processor
@@ -58,13 +118,19 @@ def home():
 
 @app.route("/cars/")
 def all_cars():
-    return render_template("cars.html", active_page='cars')
+    result = db.session.execute(db.select(Car))
+    cars = result.scalars().all()
+    return render_template("cars.html", active_page='cars', cars=cars)
 
 
 @app.route("/cars/<car_name>")
 def show_car(car_name):
-    car_name.split('-')
-    return render_template("car.html", active_page='cars')
+    try:
+        car_id = int(car_name.split('_id')[-1])
+    except ValueError:
+        car_id = None
+    car = db.get_or_404(Car, car_id)
+    return render_template("car.html", active_page='cars', car=car)
 
 
 @app.route("/rules/")

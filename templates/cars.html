@@ -6,7 +6,15 @@
 {% include 'header.html' %}
 
 <main>
-    123
+    {% if cars %}
+        {% for car in cars %}
+        {{ car.id }}
+        {% endfor %}
+    {% else %}
+        <main class="h-100 p-5" style="background-image: url({{ url_for('static', filename='img/bg2.jpg') }});">
+            <h1 class="h1 alert alert-danger">На жаль, поки що немає доступних авто :(</h1>
+        </main>
+    {% endif %}
 </main>
 
 {% include 'footer.html' %}
