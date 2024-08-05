@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block title %}Додати авто{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<main class="bg-dark text-light p-5">
+    <div class="text-center mb-4">
+        <img class="mb-4" src="{{ url_for('static', filename='favicon.png') }}" alt="RivneRent icon" width="72" height="72">
+        <h1 class="h3 mb-3 fw-normal">Додавання авто</h1>
+    </div>
+    {{ render_form(form, extra_classes="mx-auto", novalidate=True, button_style="success", button_size="lg", render_kw={"style": "width: 100%; max-width: 800px;"}) }}
+</main>
+
+{% include 'footer.html' %}
+{% endblock %}
