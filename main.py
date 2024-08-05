@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, abort
+from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
@@ -120,7 +120,14 @@ def home():
 def all_cars():
     result = db.session.execute(db.select(Car))
     cars = result.scalars().all()
-    return render_template("cars.html", active_page='cars', cars=cars)
+    all_categories = CarCategoryEnum.__members__
+    category_requested = request.args.get("category")
+    if category_requested in all_categories:
+        category_requested = all_categories[category_requested].name
+        cars = [car for car in cars if car.category.name == category_requested]
+    else:
+        category_requested = None
+    return render_template("cars.html", active_page='cars', cars=cars, categories=all_categories, choice=category_requested)
 
 
 @app.route("/cars/<car_name>")
@@ -166,6 +173,24 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+
+@app.route("/add_car/")
+@login_required
+def add_car():
+    return "add car"
+
+
+@app.route("/edit_car/<int:car_id>")
+@login_required
+def edit_car(car_id):
+    return f"{car_id} edited"
+
+
+@app.route("/delete_car/<int:car_id>")
+@login_required
+def delete_car(car_id):
+    return f"{car_id} deleted"
 
 
 if __name__ == "__main__":
