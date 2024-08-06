@@ -7,18 +7,7 @@
 {% include 'header.html' %}
 
 <main class="bg-dark text-light p-5">
-    {% with messages = get_flashed_messages(with_categories=True) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                {% if category in ["success", "danger"] %}
-                <div class="alert alert-{{ category }} mb-5 alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+    {% include 'flashes.html' %}
     <div class="text-center mb-4">
         <img class="mb-4" src="{{ url_for('static', filename='favicon.png') }}" alt="RivneRent icon" width="72" height="72">
         <h1 class="h3 mb-3 fw-normal">{% if is_edit %}Редагування інформації про авто{% else %}Додавання авто{% endif %}</h1>

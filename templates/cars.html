@@ -5,8 +5,10 @@
 {% block content %}
 {% include 'header.html' %}
 
-<main style="background-image: url({{ url_for('static', filename='img/bg2.jpg') }});">
-    <section class="py-5 text-center container">
+<main class="p-5" style="background-image: url({{ url_for('static', filename='img/bg2.jpg') }});">
+    {% include 'flashes.html' %}
+
+    <section class="pt-3 pb-5 text-center container">
         <div class="row">
             <div class="col-lg-6 col-md-8 mx-auto alert alert-warning border-black">
                 <h1 class="fw-light">Обирай авто в RivneRent!</h1>
@@ -34,7 +36,7 @@
         {% endfor %}
     </div>
 
-    <div class="album py-5">
+    <div class="album pt-5 pb-3">
         <div class="container">
             {% if cars %}
             <div class="row row-cols-md-2 row-cols-xl-3 g-3">

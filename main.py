@@ -218,7 +218,7 @@ def add_car():
         try:
             db.session.commit()
             flash('Авто успішно додано!', 'success')
-            return redirect(url_for('add_car'))
+            return redirect(url_for('all_cars'))
         except sqlalchemy.exc.IntegrityError:
             db.session.rollback()
             flash('Авто з такою назвою вже є у базі даних!', 'danger')
@@ -235,6 +235,7 @@ def edit_car(car_id):
         try:
             db.session.commit()
             flash('Інформацію про авто успішно змінено!', 'success')
+            return redirect(url_for('all_cars'))
         except sqlalchemy.exc.IntegrityError:
             db.session.rollback()
             flash('Авто з такою назвою вже є у базі даних! Зміни не було збережено!', 'danger')
@@ -244,7 +245,15 @@ def edit_car(car_id):
 @app.route("/delete_car/<int:car_id>")
 @login_required
 def delete_car(car_id):
-    return f"{car_id} deleted"
+    car = db.get_or_404(Car, car_id)
+    db.session.delete(car)
+    try:
+        db.session.commit()
+        flash('Авто успішно видалено!', 'success')
+    except sqlalchemy.exc.IntegrityError:
+        db.session.rollback()
+        flash('Неможливо видалити, оскільки у базі даних є бронювання на дане авто!', 'danger')
+    return redirect(url_for('all_cars'))
 
 
 if __name__ == "__main__":
