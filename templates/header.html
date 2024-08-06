@@ -33,8 +33,13 @@
                         {% endif %}
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="tel:{{ ADMIN_PHONE_NUM }}" class="nav-link active">📞</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link active dropdown-toggle" href="#" id="navbarTelDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        📞
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarTelDropdown">
+                        <li><a href="tel:{{ ADMIN_PHONE_NUM }}" class="nav-link active">📞{{ ADMIN_PHONE_NUM }}</a></li>
+                    </ul>
                 </li>
             </ul>
             <span class="navbar-text">Оренда автомобілів у місті Рівне</span>

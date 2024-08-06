@@ -1,4 +1,5 @@
-from flask import Flask, render_template, redirect, url_for, request
+import sqlalchemy.exc
+from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, URLField, TextAreaField, FloatField, IntegerField
@@ -211,14 +212,33 @@ def logout():
 def add_car():
     form = CarForm()
     if form.validate_on_submit():
-        pass
+        new_car = Car()
+        form.populate_obj(new_car)
+        db.session.add(new_car)
+        try:
+            db.session.commit()
+            flash('Авто успішно додано!', 'success')
+            return redirect(url_for('add_car'))
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            flash('Авто з такою назвою вже є у базі даних!', 'danger')
     return render_template("add_car.html", form=form)
 
 
-@app.route("/edit_car/<int:car_id>")
+@app.route("/edit_car/<int:car_id>", methods=["GET", "POST"])
 @login_required
 def edit_car(car_id):
-    return f"{car_id} edited"
+    car = db.get_or_404(Car, car_id)
+    form = CarForm(obj=car)
+    if form.validate_on_submit():
+        form.populate_obj(car)
+        try:
+            db.session.commit()
+            flash('Інформацію про авто успішно змінено!', 'success')
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            flash('Авто з такою назвою вже є у базі даних! Зміни не було збережено!', 'danger')
+    return render_template("add_car.html", form=form, is_edit=True)
 
 
 @app.route("/delete_car/<int:car_id>")
