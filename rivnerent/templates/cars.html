@@ -43,9 +43,11 @@
                 {% for car in cars %}
                 <div class="col">
                     <div class="card shadow-sm border border-dark">
-                        <a href="{{ '-'.join(car.name.split()) }}_id{{ car.id }}">
-                            <img class="bd-placeholder-img card-img-top" src="{{ car.img_url }}" width="100%">
-                        </a>
+                        <div class="ratio ratio-16x9">
+                            <a href="{{ '-'.join(car.name.split()) }}_id{{ car.id }}">
+                                <img class="bd-placeholder-img card-img-top h-100 object-fit-cover" src="{{ car.img_url }}">
+                            </a>
+                        </div>
                         <div class="card-body">
                             <a class="text-reset text-decoration-none" href="{{ '-'.join(car.name.split()) }}_id{{ car.id }}">
                                 <h5 class="card-title pb-3 border-bottom border-secondary">{{ car.name }}</h5>
