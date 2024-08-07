@@ -31,6 +31,9 @@ def add_car():
 def edit_car(car_id):
     car = db.get_or_404(Car, car_id)
     form = CarForm(obj=car)
+    form.category.data = car.category.name
+    form.fuel_type.data = car.fuel_type.name
+    form.transmission.data = car.transmission.name
     if form.validate_on_submit():
         form.populate_obj(car)
         try:

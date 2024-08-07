@@ -27,17 +27,14 @@ class LoginForm(FlaskForm):
 
 class CarForm(FlaskForm):
     name = StringField('Марка, модель', validators=[MyDataRequired()], render_kw={"placeholder": "Audi A6 Allroad"})
-    category = SelectField('Категорія', validators=[MyDataRequired()],
-                           choices=[(alias, member.value) for alias, member in CarCategoryEnum.__members__.items()])
+    category = SelectField('Категорія', validators=[MyDataRequired()], choices=[(member.name, member.value) for member in CarCategoryEnum])
     img_url = URLField('Посилання на зображення', validators=[MyDataRequired(), MyURL()],
                        render_kw={"placeholder": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Audi_A6_Allroad_Quattro_C8_1X7A0301.jpg"})
     description = TextAreaField('Опис', validators=[MyDataRequired()], render_kw={"placeholder": "Надійний, елегантний універсал для подорожей з сім'єю."})
     engine_size = FloatField('Об\'єм двигуна (л)', validators=[MyDataRequired("Об'єм двигуна має бути задано у форматі числа з плаваючою крапкою"),
                                                                NumberRange(0, message="Літраж двигуна повинен перевищувати 0")], render_kw={"placeholder": "2.0"})
-    fuel_type = SelectField('Тип пального', validators=[MyDataRequired()],
-                           choices=[(alias, member.value) for alias, member in FuelTypeEnum.__members__.items()])
-    transmission = SelectField('Тип КПП', validators=[MyDataRequired()],
-                            choices=[(alias, member.value) for alias, member in TransmissionEnum.__members__.items()])
+    fuel_type = SelectField('Тип пального', validators=[MyDataRequired()], choices=[(member.name, member.value) for member in FuelTypeEnum])
+    transmission = SelectField('Тип КПП', validators=[MyDataRequired()], choices=[(member.name, member.value) for member in TransmissionEnum])
     seats = IntegerField('Кількість місць', validators=[MyDataRequired(), NumberRange(1, message="Авто повинне мати хоча б 1 місце")], render_kw={"placeholder": "5"})
     info_url = URLField('Посилання на детальні характеристики авто', validators=[MyDataRequired(), MyURL()],
                        render_kw={"placeholder": "https://audi-a6-allroad-quattro.infocar.ua/mod_14642_a6-allroad-quattro_id5893.html"})
