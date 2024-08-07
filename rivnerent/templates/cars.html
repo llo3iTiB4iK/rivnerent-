@@ -8,7 +8,7 @@
 <main class="p-5" style="background-image: url({{ url_for('static', filename='img/bg2.jpg') }});">
     {% include 'flashes.html' %}
 
-    <section class="pt-3 pb-5 text-center container">
+    <section class="py-3 text-center container">
         <div class="row">
             <div class="col-lg-6 col-md-8 mx-auto alert alert-warning border-black">
                 <h1 class="fw-light">Обирай авто в RivneRent!</h1>
@@ -29,10 +29,12 @@
         </div>
     </section>
 
-    <div class="container w-75 d-flex justify-content-around flex-wrap bg-secondary p-2 rounded">
-        <a class="btn btn-lg m-1 {% if not choice %}btn-secondary border-bottom{% else %}btn-light{% endif %}" href="{{ url_for('main.all_cars') }}">Всі авто</a>
+    <a id="categories"></a>
+
+    <div class="container w-75 d-flex justify-content-around flex-wrap bg-secondary p-2 rounded mt-4">
+        <a class="btn btn-lg m-1 {% if not choice %}btn-secondary border-bottom{% else %}btn-light{% endif %}" href="{{ url_for('main.all_cars') }}#categories">Всі авто</a>
         {% for cat_tag, cat in categories.items() %}
-        <a class="btn btn-lg m-1 {% if choice == cat_tag %}btn-secondary border-bottom{% else %}btn-light{% endif %}" href="{{ url_for('main.all_cars', category=cat_tag) }}">{{ cat.value }}</a>
+        <a class="btn btn-lg m-1 {% if choice == cat_tag %}btn-secondary border-bottom{% else %}btn-light{% endif %}" href="{{ url_for('main.all_cars', category=cat_tag) }}#categories">{{ cat.value }}</a>
         {% endfor %}
     </div>
 
