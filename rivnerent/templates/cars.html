@@ -14,7 +14,7 @@
                 <h1 class="fw-light">Обирай авто в RivneRent!</h1>
                 <p class="lead text-muted">Зробіть вибір серед запропонованих або перегляньте наявні авто по певній категорії. В наявності авто під будь-які потреби та на будь-який термін прокату від 1 до 89 днів включно.</p>
                 {% if current_user.is_authenticated %}
-                <a class="btn btn-lg btn-primary" href="{{ url_for('add_car') }}">Додати авто</a>
+                <a class="btn btn-lg btn-primary" href="{{ url_for('admin.add_car') }}">Додати авто</a>
                 {% else %}
                 <div class="dropdown-center">
                     <button class="btn btn-lg btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -30,9 +30,9 @@
     </section>
 
     <div class="container w-75 d-flex justify-content-around flex-wrap bg-secondary p-2 rounded">
-        <a class="btn btn-lg m-1 {% if not choice %}btn-secondary border-bottom{% else %}btn-light{% endif %}" href="{{ url_for('all_cars') }}">Всі авто</a>
+        <a class="btn btn-lg m-1 {% if not choice %}btn-secondary border-bottom{% else %}btn-light{% endif %}" href="{{ url_for('main.all_cars') }}">Всі авто</a>
         {% for cat_tag, cat in categories.items() %}
-        <a class="btn btn-lg m-1 {% if choice == cat_tag %}btn-secondary border-bottom{% else %}btn-light{% endif %}" href="{{ url_for('all_cars', category=cat_tag) }}">{{ cat.value }}</a>
+        <a class="btn btn-lg m-1 {% if choice == cat_tag %}btn-secondary border-bottom{% else %}btn-light{% endif %}" href="{{ url_for('main.all_cars', category=cat_tag) }}">{{ cat.value }}</a>
         {% endfor %}
     </div>
 
@@ -68,17 +68,17 @@
                                 <div class="btn-group">
                                     {% if current_user.is_authenticated %}
                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#confirmModal"
-                                            data-confirm-text="Редагувати" data-confirm-url="{{ url_for('edit_car', car_id=car.id) }}"
+                                            data-confirm-text="Редагувати" data-confirm-url="{{ url_for('admin.edit_car', car_id=car.id) }}"
                                             data-modal-body-text="Ви хочете редагувати інформацію про дане авто?<br /><b>{{ car.name }}</b>">
                                         Редагувати
                                     </button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal"
-                                            data-confirm-text="Видалити" data-confirm-url="{{ url_for('delete_car', car_id=car.id) }}"
+                                            data-confirm-text="Видалити" data-confirm-url="{{ url_for('admin.delete_car', car_id=car.id) }}"
                                             data-modal-body-text="Ви впевнені, що хочете видалити дане авто?<br /><b>{{ car.name }}</b>">
                                         Видалити
                                     </button>
                                     {% else %}
-                                    <a class="btn btn-primary" href="https://google.com">Бронювати</a>
+                                    <a class="btn btn-primary" href="#">Бронювати</a>
                                     <a class="btn btn-outline-secondary" href="{{ '-'.join(car.name.split()) }}_id{{ car.id }}">Більше</a>
                                     {% endif %}
                                 </div>

@@ -1,6 +1,6 @@
 <header class="navbar navbar-expand-lg navbar-dark bg-dark">
     <nav class="container-xxl flex-wrap flex-md-nowrap bg-dark">
-        <a class="navbar-brand" href="{{ url_for('home') }}">
+        <a class="navbar-brand" href="{{ url_for('main.home') }}">
             <img src="{{ url_for('static', filename='favicon.png') }}" alt="RivneRent icon" width="30" height="30" class="d-inline-block align-text-top">
             RivneRent
         </a>
@@ -10,16 +10,16 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'home' %}active{% endif %}" href="{{ url_for('home') }}">Головна</a>
+                    <a class="nav-link {% if active_page == 'home' %}active{% endif %}" href="{{ url_for('main.home') }}">Головна</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'cars' %}active{% endif %}" href="{{ url_for('all_cars') }}">Перелік авто</a>
+                    <a class="nav-link {% if active_page == 'cars' %}active{% endif %}" href="{{ url_for('main.all_cars') }}">Перелік авто</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'rules' %}active{% endif %}" href="{{ url_for('rules_n_terms') }}">Правила та умови</a>
+                    <a class="nav-link {% if active_page == 'rules' %}active{% endif %}" href="{{ url_for('main.rules_n_terms') }}">Правила та умови</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'about' %}active{% endif %}" href="{{ url_for('about_us') }}">Про нас</a>
+                    <a class="nav-link {% if active_page == 'about' %}active{% endif %}" href="{{ url_for('main.about_us') }}">Про нас</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -27,9 +27,9 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
                         {% if current_user.is_authenticated %}
-                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Вихід</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Вихід</a></li>
                         {% else %}
-                        <li><a class="dropdown-item" href="{{ url_for('login') }}">Вхід</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('auth.login') }}">Вхід</a></li>
                         {% endif %}
                     </ul>
                 </li>
