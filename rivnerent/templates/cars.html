@@ -82,7 +82,7 @@
                                         Видалити
                                     </button>
                                     {% else %}
-                                    <a class="btn btn-primary" href="#">Бронювати</a>
+                                    <a class="btn btn-primary" href="{{ url_for('main.book_car', car=car.id) }}">Бронювати</a>
                                     <a class="btn btn-outline-secondary" href="{{ '-'.join(car.name.split()) }}_id{{ car.id }}">Більше</a>
                                     {% endif %}
                                 </div>

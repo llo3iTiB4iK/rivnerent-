@@ -42,5 +42,5 @@ class CarForm(FlaskForm):
     price_4to9 = StringField('Вартість за добу (термін прокату 4-9 діб)', validators=[MyDataRequired()], render_kw={"placeholder": "999 $"})
     price_10to25 = StringField('Вартість за добу (термін прокату 10-25 діб)', validators=[MyDataRequired()], render_kw={"placeholder": "999 $"})
     price_26to89 = StringField('Вартість за добу (термін прокату 26-89 діб)', validators=[MyDataRequired()], render_kw={"placeholder": "999 $"})
-    deposit = StringField('Розмір завдатку', validators=[MyDataRequired()], render_kw={"placeholder": "999 $"})
+    deposit = StringField('Розмір застави', validators=[MyDataRequired()], render_kw={"placeholder": "999 $"})
     submit = SubmitField('Зберегти')

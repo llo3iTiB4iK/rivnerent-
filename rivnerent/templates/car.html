@@ -31,7 +31,7 @@
                     <i>{{ car.description }}</i>
                 </p>
                 <div>
-                    <a class="btn btn-success fs-6" href="#">Обрати дати прокату</a>
+                    <a class="btn btn-success fs-6" href="{{ url_for('main.book_car', car=car.id) }}">Обрати дати прокату</a>
                     <a class="btn btn-outline-light fs-6 mx-3" href="{{ car.info_url }}" target="_blank">Більше про авто</a>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     ЦІНИ НА ПРОКАТ
                 </h3>
                 <h4 class="mb-5 fs-6">
-                    *Нижче Ви можете ознайомитись з вартістю прокату даного автомобіля! Усі ціни вказані за добу прокату! Завдаток вноситься перед здійсненням прокату та повертається у повному обсязі, якщо клієнт не порушив правил прокату!
+                    *Нижче Ви можете ознайомитися з вартістю прокату даного автомобіля! Усі ціни вказані за добу прокату! Застава вноситься перед здійсненням прокату та повертається у повному обсязі, якщо клієнт не порушив правил прокату!
                 </h4>
             </div>
         </div>
@@ -68,7 +68,7 @@
             <div class="col-lg-6 px-5">
                 <div class="row border-bottom">
                     <div class="col-6">
-                        <h4 class="card-title display-6">ЗАВДАТОК</h4>
+                        <h4 class="card-title display-6">ЗАСТАВА</h4>
                     </div>
                     <div class="col-6">
                         <p class="display-6 text-end">{{ car.deposit }}</p>

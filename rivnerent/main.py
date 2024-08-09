@@ -34,6 +34,13 @@ def show_car(car_name):
     return render_template("car.html", active_page='cars', car=car)
 
 
+@main_bp.route("/booking/")
+def book_car():
+    car_id = request.args.get("car")
+    car = db.get_or_404(Car, car_id)
+    return render_template("booking.html", car=car)
+
+
 @main_bp.route("/rules/")
 def rules_n_terms():
     return render_template("rules.html", active_page='rules')
