@@ -1,8 +1,8 @@
 import sqlalchemy.exc
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required
 from .forms import CarForm
-from .models import Car
+from .models import Car, AdditionalService
 from .extensions import db
 
 admin_bp = Blueprint('admin', __name__)
@@ -57,4 +57,33 @@ def delete_car(car_id):
     except sqlalchemy.exc.IntegrityError:
         db.session.rollback()
         flash('Неможливо видалити, оскільки у базі даних є бронювання на дане авто!', 'danger')
+    return redirect(url_for('main.all_cars'))
+
+
+@admin_bp.route("/add_service/", methods=["POST"])
+@login_required
+def add_service():
+    form = request.form
+    new_service = AdditionalService(name=form.get("name"), daily_price=form.get("daily_price"), max_price=form.get("max_price"))
+    db.session.add(new_service)
+    try:
+        db.session.commit()
+        flash('Додаткову послугу успішно додано!', 'success')
+    except sqlalchemy.exc.IntegrityError:
+        db.session.rollback()
+        flash('Не вдалося додати додаткову послугу! Можливо, послуга з такою назвою вже є в базі даних.', 'danger')
+    return redirect(url_for("main.all_cars"))
+
+
+@admin_bp.route("/delete_service/<int:service_id>")
+@login_required
+def delete_service(service_id):
+    service = db.get_or_404(AdditionalService, service_id)
+    db.session.delete(service)
+    try:
+        db.session.commit()
+        flash('Додаткову послугу успішно видалено!', 'success')
+    except sqlalchemy.exc.IntegrityError:
+        db.session.rollback()
+        flash('Неможливо видалити, оскільки у базі даних є бронювання з вибором даної послуги!', 'danger')
     return redirect(url_for('main.all_cars'))

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from .models import Car, CarCategoryEnum
+from .models import Car, CarCategoryEnum, AdditionalService
 from .extensions import db
 
 main_bp = Blueprint('main', __name__)
@@ -21,7 +21,9 @@ def all_cars():
         cars = [car for car in cars if car.category.name == category_requested]
     else:
         category_requested = None
-    return render_template("cars.html", active_page='cars', cars=cars, categories=all_categories, choice=category_requested)
+    result = db.session.execute(db.select(AdditionalService))
+    services = result.scalars().all()
+    return render_template("cars.html", active_page='cars', cars=cars, categories=all_categories, choice=category_requested, services=services)
 
 
 @main_bp.route("/cars/<car_name>")

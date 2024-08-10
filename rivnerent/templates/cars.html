@@ -98,6 +98,47 @@
             {% endif %}
         </div>
     </div>
+
+    {% if current_user.is_authenticated %}
+    <div class="container pt-5">
+        <div class="row">
+            <form method="POST" action="{{ url_for('admin.add_service') }}">
+                <table class="table table-striped table-hover border border-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col"><label for="serviceName" class="form-label mb-0">Назва послуги</label></th>
+                            <th scope="col"><label for="serviceDailyPrice" class="form-label mb-0">Ціна за добу</label></th>
+                            <th scope="col"><label for="serviceMaxPrice" class="form-label mb-0">Максимальна ціна за весь період</label></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for service in services %}
+                        <tr>
+                            <td>{{ service.name }}</td>
+                            <td>{{ service.daily_price }}</td>
+                            <td>{{ service.max_price }}</td>
+                            <td class="text-center">
+                                <button type="button" class="btn" title="Видалити послугу" data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                        data-confirm-text="Видалити" data-confirm-url="{{ url_for('admin.delete_service', service_id=service.id) }}"
+                                        data-modal-body-text="Ви впевнені, що хочете видалити дану додаткову послугу з переліку доступних?<br /><b>{{ service.name }}</b>">
+                                    ❌
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td><input type="text" class="form-control border-success" id="serviceName" name="name" placeholder="Назва нової послуги" maxlength="100" required></td>
+                            <td><input type="text" class="form-control border-success" id="serviceDailyPrice" name="daily_price" placeholder="Ціна за добу нової послуги" maxlength="20" required></td>
+                            <td><input type="text" class="form-control border-success" id="serviceMaxPrice" name="max_price" placeholder="Максимальна ціна нової послуги" maxlength="20" required></td>
+                            <td class="text-center"><input type="submit" class="btn" value="✔" title="Додати послугу"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+    {% endif %}
 </main>
 
 <!-- Modal -->

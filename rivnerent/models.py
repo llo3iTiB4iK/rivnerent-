@@ -49,3 +49,10 @@ class Car(db.Model):
     price_10to25: Mapped[str] = mapped_column(String(20), nullable=False)
     price_26to89: Mapped[str] = mapped_column(String(20), nullable=False)
     deposit: Mapped[str] = mapped_column(String(20), nullable=False)
+
+
+class AdditionalService(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
+    daily_price: Mapped[str] = mapped_column(String(20), nullable=False)
+    max_price: Mapped[str] = mapped_column(String(20), nullable=False)
