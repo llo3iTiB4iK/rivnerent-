@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, URLField, TextAreaField, FloatField, IntegerField
-from wtforms.validators import DataRequired, URL, NumberRange
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, URLField, TextAreaField, FloatField, IntegerField, DateTimeField, SelectMultipleField, DateField, EmailField
+from wtforms.validators import DataRequired, URL, NumberRange, Email, InputRequired
+from wtforms.widgets import CheckboxInput
 from .models import CarCategoryEnum, FuelTypeEnum, TransmissionEnum
 
 
@@ -44,3 +45,16 @@ class CarForm(FlaskForm):
     price_26to89 = StringField('Вартість за добу (термін прокату 26-89 діб)', validators=[MyDataRequired()], render_kw={"placeholder": "999 $"})
     deposit = StringField('Розмір застави', validators=[MyDataRequired()], render_kw={"placeholder": "999 $"})
     submit = SubmitField('Зберегти')
+
+
+class BookingForm(FlaskForm):
+    car_obtain_time = DateTimeField('Дата і час отримання авто', validators=[MyDataRequired()])
+    car_return_time = DateTimeField('Дата і час повернення авто', validators=[MyDataRequired()])
+    options = SelectMultipleField(coerce=int, option_widget=CheckboxInput())
+    full_name = StringField('Ім\'я та прізвище', validators=[MyDataRequired()])
+    phone_number = StringField('Телефон', validators=[MyDataRequired()])
+    birth_date = DateField('Дата народження')
+    email = EmailField('Email', validators=[MyDataRequired(), Email("Некоректний формат електронної адреси")])
+    comment = TextAreaField('Коментар (опціонально)')
+    agree = BooleanField(validators=[InputRequired("Щоб оформити замовлення потрібно прийняти користувальницьку угоду")], default="checked")
+    submit = SubmitField('Забронювати')

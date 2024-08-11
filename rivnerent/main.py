@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash
 from .models import Car, CarCategoryEnum, AdditionalService
 from .extensions import db
+from .forms import BookingForm
 
 main_bp = Blueprint('main', __name__)
 
@@ -42,11 +43,20 @@ def show_car(car_name):
     return render_template("car.html", active_page='cars', car=car)
 
 
-@main_bp.route("/booking/")
+@main_bp.route("/booking/", methods=["GET", "POST"])
 def book_car():
+    # Визначення авто, що бронюватиметься
     car_id = request.args.get("car")
     car = db.get_or_404(Car, car_id)
-    return render_template("booking.html", car=car)
+    # Отримання додаткових послуг
+    result = db.session.execute(db.select(AdditionalService))
+    services = result.scalars().all()
+    # Створення форми
+    form = BookingForm()
+    form.options.choices = [(service.id, service.name) for service in services]
+    if form.validate_on_submit():
+        return "form submitted"
+    return render_template("booking.html", car=car, form=form)
 
 
 @main_bp.route("/rules/")

@@ -10,18 +10,22 @@
         <h1 class="h3 mb-3 fw-normal">Увійти як адміністратор</h1>
 
         <div class="form-floating text-dark">
-            {{ form.login(class_="form-control") }}
+            {{ form.login(class_="form-control" + (' is-invalid' if form.login.errors else '')) }}
             {{ form.login.label(class_="form-label") }}
-            {% for error in form.login.errors %}
-                <div class="text-danger mb-3">{{ error }}</div>
-            {% endfor %}
+            <div class="invalid-feedback mb-3">
+                {% for error in form.login.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
         </div>
         <div class="form-floating text-dark">
-            {{ form.password(class_="form-control") }}
+            {{ form.password(class_="form-control" + (' is-invalid' if form.password.errors else '')) }}
             {{ form.password.label(class_="form-label") }}
-            {% for error in form.password.errors %}
-                <div class="text-danger mb-3">{{ error }}</div>
-            {% endfor %}
+            <div class="invalid-feedback mb-3">
+                {% for error in form.password.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
         </div>
 
         <div class="checkbox mb-3">
