@@ -75,6 +75,23 @@ def add_service():
     return redirect(url_for("main.all_cars"))
 
 
+@admin_bp.route("/edit_service/<int:service_id>", methods=["POST"])
+@login_required
+def edit_service(service_id):
+    service = db.get_or_404(AdditionalService, service_id)
+    form = request.form
+    service.name = form.get("name")
+    service.daily_price = form.get("daily_price")
+    service.max_price = form.get("max_price")
+    try:
+        db.session.commit()
+        flash('Додаткову послугу успішно змінено!', 'success')
+    except sqlalchemy.exc.IntegrityError:
+        db.session.rollback()
+        flash('Не вдалося змінити додаткову послугу! Можливо, послуга з такою назвою вже є в базі даних.', 'danger')
+    return redirect(url_for("main.all_cars"))
+
+
 @admin_bp.route("/delete_service/<int:service_id>")
 @login_required
 def delete_service(service_id):

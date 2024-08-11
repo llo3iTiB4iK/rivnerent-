@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, flash
 from .models import Car, CarCategoryEnum, AdditionalService
 from .extensions import db
 
@@ -23,7 +23,13 @@ def all_cars():
         category_requested = None
     result = db.session.execute(db.select(AdditionalService))
     services = result.scalars().all()
-    return render_template("cars.html", active_page='cars', cars=cars, categories=all_categories, choice=category_requested, services=services)
+    try:
+        service_to_edit = int(request.args.get('edit_service_id'))
+        flash('Тепер Ви можете редагувати обрану додаткову послугу. Не забудьте зберегти зміни!', 'success')
+    except (TypeError, ValueError):
+        service_to_edit = None
+    return render_template("cars.html", active_page='cars', cars=cars, categories=all_categories,
+                           choice=category_requested, services=services, edit_service=service_to_edit)
 
 
 @main_bp.route("/cars/<car_name>")

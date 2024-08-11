@@ -102,7 +102,8 @@
     {% if current_user.is_authenticated %}
     <div class="container pt-5">
         <div class="row">
-            <form method="POST" action="{{ url_for('admin.add_service') }}">
+            <form method="POST" action="{% if edit_service %}{{ url_for('admin.edit_service', service_id=edit_service) }}{% else %}{{ url_for('admin.add_service') }}{% endif %}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <table class="table table-striped table-hover border border-dark">
                     <thead>
                         <tr>
@@ -114,25 +115,47 @@
                     </thead>
                     <tbody>
                         {% for service in services %}
-                        <tr>
-                            <td>{{ service.name }}</td>
-                            <td>{{ service.daily_price }}</td>
-                            <td>{{ service.max_price }}</td>
-                            <td class="text-center">
-                                <button type="button" class="btn" title="Видалити послугу" data-bs-toggle="modal" data-bs-target="#confirmModal"
-                                        data-confirm-text="Видалити" data-confirm-url="{{ url_for('admin.delete_service', service_id=service.id) }}"
-                                        data-modal-body-text="Ви впевнені, що хочете видалити дану додаткову послугу з переліку доступних?<br /><b>{{ service.name }}</b>">
-                                    ❌
-                                </button>
-                            </td>
-                        </tr>
+                            {% if service.id == edit_service %}
+                            <tr>
+                                <td><input type="text" class="form-control border-success" id="serviceName" name="name" placeholder="Назва нової послуги" maxlength="100" value="{{ service.name }}" required></td>
+                                <td><input type="text" class="form-control border-success" id="serviceDailyPrice" name="daily_price" placeholder="Ціна за добу нової послуги" maxlength="20" value="{{ service.daily_price }}" required></td>
+                                <td><input type="text" class="form-control border-success" id="serviceMaxPrice" name="max_price" placeholder="Максимальна ціна нової послуги" maxlength="20" value="{{ service.max_price }}" required></td>
+                                <td style="width: 1%; white-space: nowrap;">
+                                    <input type="submit" class="btn" value="💾" title="Зберегти зміни">
+                                    <button type="button" class="btn" title="Відхилити зміни" data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                            data-confirm-text="Відхилити" data-confirm-url="{{ url_for('main.all_cars') }}" data-modal-body-text="Відхилити внесені зміни?">
+                                        ❌
+                                    </button>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td>{{ service.name }}</td>
+                                <td>{{ service.daily_price }}</td>
+                                <td>{{ service.max_price }}</td>
+                                <td style="width: 1%; white-space: nowrap;">
+                                    <button type="button" class="btn" title="Редагувати послугу" data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                            data-confirm-text="Редагувати" data-confirm-url="{{ url_for('main.all_cars', edit_service_id=service.id) }}"
+                                            data-modal-body-text="Ви хочете редагувати дану додаткову послугу?<br /><b>{{ service.name }}</b>">
+                                        ✏
+                                    </button>
+                                    <button type="button" class="btn" title="Видалити послугу" data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                            data-confirm-text="Видалити" data-confirm-url="{{ url_for('admin.delete_service', service_id=service.id) }}"
+                                            data-modal-body-text="Ви впевнені, що хочете видалити дану додаткову послугу з переліку доступних?<br /><b>{{ service.name }}</b>">
+                                        ❌
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endif %}
                         {% endfor %}
+                        {% if not edit_service %}
                         <tr>
                             <td><input type="text" class="form-control border-success" id="serviceName" name="name" placeholder="Назва нової послуги" maxlength="100" required></td>
                             <td><input type="text" class="form-control border-success" id="serviceDailyPrice" name="daily_price" placeholder="Ціна за добу нової послуги" maxlength="20" required></td>
                             <td><input type="text" class="form-control border-success" id="serviceMaxPrice" name="max_price" placeholder="Максимальна ціна нової послуги" maxlength="20" required></td>
                             <td class="text-center"><input type="submit" class="btn" value="✔" title="Додати послугу"></td>
                         </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </form>
