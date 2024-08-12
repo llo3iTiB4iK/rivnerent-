@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, URLField, TextAreaField, FloatField, IntegerField, DateTimeField, SelectMultipleField, DateField, EmailField
-from wtforms.validators import DataRequired, URL, NumberRange, Email, InputRequired
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, URLField, TextAreaField, FloatField, IntegerField, SelectMultipleField, DateField, EmailField, TelField
+from wtforms.validators import DataRequired, URL, NumberRange, Email, InputRequired, Regexp, Length
 from wtforms.widgets import CheckboxInput
 from .models import CarCategoryEnum, FuelTypeEnum, TransmissionEnum
 
@@ -48,13 +48,15 @@ class CarForm(FlaskForm):
 
 
 class BookingForm(FlaskForm):
-    car_obtain_time = DateTimeField('Дата і час отримання авто', validators=[MyDataRequired()])
-    car_return_time = DateTimeField('Дата і час повернення авто', validators=[MyDataRequired()])
+    car_obtain_time = StringField('Дата і час отримання авто', validators=[MyDataRequired()])
+    car_return_time = StringField('Дата і час повернення авто', validators=[MyDataRequired()])
     options = SelectMultipleField(coerce=int, option_widget=CheckboxInput())
-    full_name = StringField('Ім\'я та прізвище', validators=[MyDataRequired()])
-    phone_number = StringField('Телефон', validators=[MyDataRequired()])
+    full_name = StringField('Ім\'я та прізвище', validators=[MyDataRequired()], render_kw={"placeholder": "Ім'я Прізвище"})
+    phone_number = TelField('Телефон', validators=[MyDataRequired(), Regexp(r'^[0-9]{9}$', message="Номер має бути у форматі +380XXXXXXXXX")],
+                            render_kw={"placeholder": "123456789", "maxlength": "9"})
     birth_date = DateField('Дата народження')
-    email = EmailField('Email', validators=[MyDataRequired(), Email("Некоректний формат електронної адреси")])
-    comment = TextAreaField('Коментар (опціонально)')
+    email = EmailField('Email', validators=[MyDataRequired(), Email("Некоректний формат електронної адреси")], render_kw={"placeholder": "123@example.com"})
+    comment = TextAreaField('Коментар (необов\'язково)', validators=[Length(max=1000, message="Довжина коментаря перевищує дозволену (1000 символів)")],
+                            render_kw={"placeholder": "Введіть коментар", "rows": "5"})
     agree = BooleanField(validators=[InputRequired("Щоб оформити замовлення потрібно прийняти користувальницьку угоду")], default="checked")
     submit = SubmitField('Забронювати')

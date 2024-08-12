@@ -1,62 +1,42 @@
 {% extends "base.html" %}
 
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+    <style>
+        .flatpickr-minute {
+            pointer-events: none;
+        }
+        #agree:focus {
+	        box-shadow: 0 0 0 .25rem rgba(0,255,0,.25);
+	        border-color: rgba(var(--bs-success-rgb),var(--bs-bg-opacity));
+        }
+        #agree:checked {
+            background-color: rgba(var(--bs-success-rgb),var(--bs-bg-opacity));
+	        border-color: rgba(var(--bs-success-rgb),var(--bs-bg-opacity));
+        }
+        .link-light:hover {
+            text-decoration: none;
+        }
+    </style>
+{% endblock %}
+
 {% block title %}Бронювання авто{% endblock %}
 
 {% block content %}
 {% include 'header.html' %}
 
 <main class="bg-body-tertiary text-light p-5" data-bs-theme="dark">
-    <div class="container" style="max-width: 1000px;">
+    <div class="container px-lg-5" style="max-width: 1200px;">
         <div class="text-center mb-5">
             <img class="d-block mx-auto mb-4" src="{{ url_for('static', filename='favicon.png') }}" alt="RivneRent icon" width="72" height="72">
             <h2>Бронювання автомобіля</h2>
         </div>
 
-        <div class="row g-5">
-            <div class="col-md-5 col-lg-4 order-md-last">
-                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-primary">Your cart</span>
-                    <span class="badge bg-primary rounded-pill">3</span>
-                </h4>
-                <ul class="list-group mb-3">
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Product name</h6>
-                            <small class="text-body-secondary">Brief description</small>
-                        </div>
-                        <span class="text-body-secondary">$12</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Second product</h6>
-                            <small class="text-body-secondary">Brief description</small>
-                        </div>
-                        <span class="text-body-secondary">$8</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Third item</h6>
-                            <small class="text-body-secondary">Brief description</small>
-                        </div>
-                        <span class="text-body-secondary">$5</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
-                        <div class="text-secondary">
-                            <h6 class="my-0">Застава</h6>
-                        </div>
-                        <span class="text-success">−$5</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>Total (USD)</span>
-                        <strong>$20</strong>
-                    </li>
-                </ul>
-            </div>
+        <form class="row g-5" method="post" novalidate>
+            {{ form.hidden_tag() }}
 
-            <div class="col-md-7 col-lg-8">
-                <form method="post" novalidate>
-                {{ form.hidden_tag() }}
-
+            <div class="col-md-7">
                 <div class="mb-3">
                     <h4>Дати прокату</h4>
                     <small class="text-muted">Виберіть потрібні дні та години</small>
@@ -65,21 +45,35 @@
                 <div class="row g-3">
                     <div class="col-sm-6">
                         {{ form.car_obtain_time.label(class_="form-label") }}
-                        {{ form.car_obtain_time(class_="form-control" + (' is-invalid' if form.car_obtain_time.errors else '')) }}
-                        <div class="invalid-feedback">
-                            {% for error in form.car_obtain_time.errors %}
-                            <span>{{ error }}</span>
-                            {% endfor %}
+                        <div id="car_obtain_flatpicker" class="input-group has-validation" data-wrap="true">
+                            <span class="input-group-text" data-toggle>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                                </svg>
+                            </span>
+                            {{ form.car_obtain_time(class_="form-control" + (' is-invalid' if form.car_obtain_time.errors else ''), data_input=True) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.car_obtain_time.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
 
                     <div class="col-sm-6">
                         {{ form.car_return_time.label(class_="form-label") }}
-                        {{ form.car_return_time(class_="form-control" + (' is-invalid' if form.car_return_time.errors else '')) }}
-                        <div class="invalid-feedback">
-                            {% for error in form.car_return_time.errors %}
-                            <span>{{ error }}</span>
-                            {% endfor %}
+                        <div id="car_return_flatpicker" class="input-group has-validation" data-wrap="true">
+                            <span class="input-group-text" data-toggle>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                                </svg>
+                            </span>
+                            {{ form.car_return_time(class_="form-control" + (' is-invalid' if form.car_return_time.errors else ''), data_input=True) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.car_return_time.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,12 +101,113 @@
                     <small class="text-muted">Вкажіть контактні дані, щоб ми могли з Вами зв'язатись</small>
                 </div>
 
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        {{ form.full_name.label(class_="form-label") }}
+                        {{ form.full_name(class_="form-control" + (' is-invalid' if form.full_name.errors else '')) }}
+                        <div class="invalid-feedback">
+                            {% for error in form.full_name.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        {{ form.phone_number.label(class_="form-label") }}
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">🇺🇦 +380</span>
+                            {{ form.phone_number(size=9, class_="form-control" + (' is-invalid' if form.phone_number.errors else '')) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.phone_number.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-6">
+                        {{ form.birth_date.label(class_="form-label") }}
+                        {{ form.birth_date(class_="form-control" + (' is-invalid' if form.birth_date.errors else '')) }}
+                        <div class="invalid-feedback">
+                            {% for error in form.birth_date.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        {{ form.email.label(class_="form-label") }}
+                        {{ form.email(class_="form-control" + (' is-invalid' if form.email.errors else '')) }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
                 <hr class="my-4">
 
-                {{ form.submit(class_="w-100 btn btn-primary btn-lg") }}
-            </form>
-          </div>
-        </div>
+                <div>
+                    {{ form.comment.label(class_="form-label") }}
+                    {{ form.comment(class_="form-control" + (' is-invalid' if form.comment.errors else '')) }}
+                    <div class="invalid-feedback">
+                        {% for error in form.comment.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="position-sticky" style="top: 80px;">
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <img src="{{ car.img_url }}" class="img-fluid" alt="{{ car.name }} image">
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">{{ car.name }}</h6>
+                                <small class="text-body-secondary">Brief description</small>
+                            </div>
+                            <span class="text-body-secondary">$12</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Second product</h6>
+                                <small class="text-body-secondary">Brief description</small>
+                            </div>
+                            <span class="text-body-secondary">$8</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Third item</h6>
+                                <small class="text-body-secondary">Brief description</small>
+                            </div>
+                            <span class="text-body-secondary">$5</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Застава</h6>
+                            </div>
+                            <span>{{ car.deposit }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between fs-5 fw-semibold">
+                            <span>Усього</span>
+                            <span>$5</span>
+                        </li>
+                    </ul>
+                    {{ form.submit(class_="w-100 btn btn-success btn-lg") }}
+                    <div class="form-check mt-3">
+                        {{ form.agree(class="form-check-input shadow-success") }}
+                        <label for="{{ form.agree.id }}" class="form-label">
+                            Відправляючи замовлення, Ви приймаєте діючі <a href="{{ url_for('main.rules_n_terms') }}" target="_blank" class="link-light">умови прокату</a> та висловлюєте згоду на обробку ваших персональних даних.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </main>
 
@@ -125,6 +220,48 @@
         if (chars.length > 0) {
             label.innerHTML = `<span style="display: inline-block; width: 1.5em; text-align: center;">${chars[0]}</span>${chars.slice(1).join('')}`;
         }
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    function getNextHourDate() {
+        const now = new Date();
+        now.setMinutes(0);
+        now.setSeconds(0);
+        now.setMilliseconds(0);
+        if (now.getHours() < 23) {
+            now.setHours(now.getHours() + 1);
+        } else {
+            now.setHours(0);
+            now.setDate(now.getDate() + 1);
+        }
+        return now;
+    }
+
+    function getNextDayDate() {
+        const now = getNextHourDate();
+        now.setDate(now.getDate() + 1);
+        return now;
+    }
+
+    flatpickr("#car_obtain_flatpicker", {
+        enableTime: true,
+        time_24hr: true,
+        minuteIncrement: 30,
+        dateFormat: "d-m-Y H:i",
+        minDate: getNextHourDate(),
+        defaultDate: getNextHourDate(),
+        wrap: true
+    });
+
+    flatpickr("#car_return_flatpicker", {
+        enableTime: true,
+        time_24hr: true,
+        minuteIncrement: 30,
+        dateFormat: "d-m-Y H:i",
+        minDate: getNextHourDate(),
+        defaultDate: getNextDayDate(),
+        wrap: true
     });
 </script>
 
