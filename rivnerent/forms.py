@@ -1,8 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, URLField, TextAreaField, FloatField, IntegerField, SelectMultipleField, DateField, EmailField, TelField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, URLField, TextAreaField, FloatField, IntegerField, SelectMultipleField, DateField, EmailField, TelField, ValidationError
 from wtforms.validators import DataRequired, URL, NumberRange, Email, InputRequired, Regexp, Length
 from wtforms.widgets import CheckboxInput
 from .models import CarCategoryEnum, FuelTypeEnum, TransmissionEnum
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 
 class MyDataRequired(DataRequired):
@@ -47,6 +49,13 @@ class CarForm(FlaskForm):
     submit = SubmitField('Зберегти')
 
 
+def validate_age(form, field):
+    print(field.data)
+    date_21_years_ago = date.today() - relativedelta(years=21)
+    if field.data > date_21_years_ago:
+        raise ValidationError('Вам повинно бути щонайменше 21 рік')
+
+
 class BookingForm(FlaskForm):
     car_obtain_time = StringField('Дата і час отримання авто', validators=[MyDataRequired()])
     car_return_time = StringField('Дата і час повернення авто', validators=[MyDataRequired()])
@@ -54,7 +63,7 @@ class BookingForm(FlaskForm):
     full_name = StringField('Ім\'я та прізвище', validators=[MyDataRequired()], render_kw={"placeholder": "Ім'я Прізвище"})
     phone_number = TelField('Телефон', validators=[MyDataRequired(), Regexp(r'^[0-9]{9}$', message="Номер має бути у форматі +380XXXXXXXXX")],
                             render_kw={"placeholder": "123456789", "maxlength": "9"})
-    birth_date = DateField('Дата народження')
+    birth_date = DateField('Дата народження', validators=[validate_age])
     email = EmailField('Email', validators=[MyDataRequired(), Email("Некоректний формат електронної адреси")], render_kw={"placeholder": "123@example.com"})
     comment = TextAreaField('Коментар (необов\'язково)', validators=[Length(max=1000, message="Довжина коментаря перевищує дозволену (1000 символів)")],
                             render_kw={"placeholder": "Введіть коментар", "rows": "5"})
