@@ -33,10 +33,10 @@
             <h2>Бронювання автомобіля</h2>
         </div>
 
-        <form class="row g-5" method="post" novalidate>
+        <form class="row g-5 justify-content-center" method="post" novalidate>
             {{ form.hidden_tag() }}
 
-            <div class="col-md-7">
+            <div class="col-md-9 col-lg-7">
                 <div class="mb-3">
                     <h4>Дати прокату</h4>
                     <small class="text-muted">Виберіть потрібні дні та години</small>
@@ -76,6 +76,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="alert alert-warning" role="alert" id="incorrect_dates" hidden></div>
                 </div>
 
                 <hr class="my-4">
@@ -87,9 +89,12 @@
 
                 <div id="additional_services">
                     {% for option in form.options %}
-                    <div class="form-check">
-                        {{ option(class="form-check-input") }}
-                        {{ option.label(class_="form-label") }}
+                    <div class="d-flex justify-content-between">
+                        <div class="form-check">
+                            {{ option(class="form-check-input") }}
+                            {{ option.label(class_="form-label") }}
+                        </div>
+                        <b class="service-price" data-daily-price="{{ services[loop.index-1].daily_price }}" data-max-price="{{ services[loop.index-1].max_price }}"></b>
                     </div>
                     {% endfor %}
                 </div>
@@ -160,7 +165,7 @@
                 </div>
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-9 col-lg-5">
                 <div class="position-sticky" style="top: 80px;">
                     <ul class="list-group mb-3">
                         <li class="list-group-item d-flex justify-content-between lh-sm">
@@ -169,41 +174,33 @@
                         <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div>
                                 <h6 class="my-0">{{ car.name }}</h6>
-                                <small class="text-body-secondary">Brief description</small>
+                                <small class="text-body-secondary"><b id="car_daily"></b> x <b id="period"></b> дні</small>
                             </div>
-                            <span class="text-body-secondary">$12</span>
+                            <b id="car_total"></b>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Second product</h6>
-                                <small class="text-body-secondary">Brief description</small>
-                            </div>
-                            <span class="text-body-secondary">$8</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Third item</h6>
-                                <small class="text-body-secondary">Brief description</small>
-                            </div>
-                            <span class="text-body-secondary">$5</span>
-                        </li>
+                        <ul class="list-group rounded-0" id="selected-options-list"></ul>
                         <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div>
                                 <h6 class="my-0">Застава</h6>
                             </div>
-                            <span>{{ car.deposit }}</span>
+                            <b>{{ car.deposit }}</b>
                         </li>
                         <li class="list-group-item d-flex justify-content-between fs-5 fw-semibold">
                             <span>Усього</span>
-                            <span>$5</span>
+                            <span id="total_price"></span>
                         </li>
                     </ul>
                     {{ form.submit(class_="w-100 btn btn-success btn-lg") }}
                     <div class="form-check mt-3">
-                        {{ form.agree(class="form-check-input shadow-success") }}
+                        {{ form.agree(class="form-check-input" + (' is-invalid' if form.agree.errors else '')) }}
                         <label for="{{ form.agree.id }}" class="form-label">
                             Відправляючи замовлення, Ви приймаєте діючі <a href="{{ url_for('main.rules_n_terms') }}" target="_blank" class="link-light">умови прокату</a> та висловлюєте згоду на обробку ваших персональних даних.
                         </label>
+                        <div class="invalid-feedback">
+                            {% for error in form.agree.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -244,24 +241,136 @@
         return now;
     }
 
-    flatpickr("#car_obtain_flatpicker", {
-        enableTime: true,
-        time_24hr: true,
-        minuteIncrement: 30,
-        dateFormat: "d-m-Y H:i",
-        minDate: getNextHourDate(),
-        defaultDate: getNextHourDate(),
-        wrap: true
-    });
+    function numberFromPrice(price) {
+        return parseInt(price.replace(/[^\d]/g, ''));
+    }
 
-    flatpickr("#car_return_flatpicker", {
-        enableTime: true,
-        time_24hr: true,
-        minuteIncrement: 30,
-        dateFormat: "d-m-Y H:i",
-        minDate: getNextHourDate(),
-        defaultDate: getNextDayDate(),
-        wrap: true
+    function serviceCheckboxHandler(checkbox) {
+        const serviceId = checkbox.value;
+        const serviceHtml = checkbox.nextElementSibling.innerHTML;
+        const servicePrice = checkbox.parentElement.nextElementSibling.innerHTML;
+        const selectedOptionsList = document.getElementById('selected-options-list');
+
+        if (checkbox.checked) {
+            const newListItem = document.createElement('li');
+            newListItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'lh-sm');
+            newListItem.setAttribute('data-service-id', serviceId);
+            newListItem.innerHTML = `
+                <div>
+                    <h6 class="my-0">${serviceHtml}</h6>
+                </div>
+                <b class="service-price">${servicePrice}</b>
+            `;
+            selectedOptionsList.appendChild(newListItem);
+        } else {
+            const listItemToRemove = selectedOptionsList.querySelector(`[data-service-id="${serviceId}"]`);
+            if (listItemToRemove) {
+                listItemToRemove.remove();
+            }
+        }
+
+        sumUpPrice();
+    }
+
+    function calculatePrices() {
+        const startDate = document.getElementById("car_obtain_flatpicker")._flatpickr.selectedDates[0];
+        const endDate = document.getElementById("car_return_flatpicker")._flatpickr.selectedDates[0];
+        let booking_days = Math.ceil((endDate-startDate)/1000/60/60/24);
+
+        let incorrect_dates_warning = document.getElementById("incorrect_dates");
+
+        if (booking_days < 1) {
+            incorrect_dates_warning.innerText = "Дата і час повернення авто мають бути пізнішими за дату і час його отримання.";
+            incorrect_dates_warning.hidden = false;
+            return;
+        } else if (booking_days > 89) {
+            incorrect_dates_warning.innerText = "Максимальна тривалість прокату не може перевищувати 89 днів.";
+            incorrect_dates_warning.hidden = false;
+            return;
+        } else {
+            incorrect_dates_warning.hidden = true;
+        }
+
+        document.getElementById("period").innerText = booking_days;
+
+        document.querySelectorAll('#additional_services .service-price').forEach(service_price => {
+            let calculated_price = numberFromPrice(service_price.dataset.dailyPrice) * booking_days;
+            const max_price = numberFromPrice(service_price.dataset.maxPrice);
+            if (calculated_price > max_price) {
+                calculated_price = max_price;
+            }
+            service_price.innerText = calculated_price + ' ₴';
+            document.querySelectorAll("#selected-options-list .service-price").forEach(servicePrice => {
+                if (servicePrice.parentElement.dataset.serviceId === service_price.previousElementSibling.firstElementChild.value) {
+                    servicePrice.innerText = service_price.innerText;
+                }
+            });
+        });
+
+        let car_daily_price;
+        if (booking_days >= 1 && booking_days <= 3) {
+            car_daily_price = {{ car.price_1to3|tojson }};
+        } else if (booking_days >= 4 && booking_days <= 9) {
+            car_daily_price = {{ car.price_4to9|tojson }};
+        } else if (booking_days >= 10 && booking_days <= 25) {
+            car_daily_price = {{ car.price_10to25|tojson }};
+        } else if (booking_days >= 26 && booking_days <= 89) {
+            car_daily_price = {{ car.price_26to89|tojson }};
+        }
+        document.getElementById("car_daily").innerText = car_daily_price;
+
+        let car_total_price = numberFromPrice(car_daily_price) * booking_days + ' ₴';
+        document.getElementById("car_total").innerText = car_total_price;
+
+        sumUpPrice();
+    }
+
+    function sumUpPrice() {
+        let total_price = numberFromPrice(document.getElementById("car_total").innerText);
+        document.querySelectorAll("#selected-options-list .service-price").forEach(servicePrice => {
+            total_price += numberFromPrice(servicePrice.innerText);
+        });
+        document.getElementById("total_price").innerText = total_price.toLocaleString() + ' ₴';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr("#car_obtain_flatpicker", {
+            enableTime: true,
+            time_24hr: true,
+            minuteIncrement: 30,
+            dateFormat: "d-m-Y H:i",
+            minDate: getNextHourDate(),
+            defaultDate: getNextHourDate(),
+            wrap: true,
+            onChange: calculatePrices
+        });
+
+        flatpickr("#car_return_flatpicker", {
+            enableTime: true,
+            time_24hr: true,
+            minuteIncrement: 30,
+            dateFormat: "d-m-Y H:i",
+            minDate: getNextHourDate(),
+            defaultDate: getNextDayDate(),
+            wrap: true,
+            onChange: calculatePrices
+        });
+
+        calculatePrices();
+
+        document.querySelectorAll('#additional_services input[type="checkbox"]').forEach(checkbox => {
+            serviceCheckboxHandler(checkbox);
+            checkbox.addEventListener('change', () => serviceCheckboxHandler(checkbox));
+        });
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            const incorrect_dates_warning = document.getElementById("incorrect_dates");
+
+            if (! incorrect_dates_warning.hidden) {
+                event.preventDefault();
+                event.target.scrollIntoView({"behavior": "smooth"});
+            }
+        });
     });
 </script>
 

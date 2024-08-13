@@ -56,7 +56,7 @@ def book_car():
     form.options.choices = [(service.id, service.name) for service in services]
     if form.validate_on_submit():
         return "form submitted"
-    return render_template("booking.html", car=car, services=services, form=form)
+    return render_template("booking.html", car=car, services=[{"id": service.id, "daily_price": service.daily_price, "max_price": service.max_price} for service in services], form=form)
 
 
 @main_bp.route("/rules/")
