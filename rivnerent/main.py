@@ -55,6 +55,7 @@ def book_car():
     form = BookingForm()
     form.options.choices = [(service.id, service.name) for service in services]
     if form.validate_on_submit():
+        print(form.data)
         return "form submitted"
     return render_template("booking.html", car=car, services=[{"id": service.id, "daily_price": service.daily_price, "max_price": service.max_price} for service in services], form=form)
 
