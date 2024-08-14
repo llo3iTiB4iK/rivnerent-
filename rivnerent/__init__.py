@@ -1,6 +1,6 @@
 from flask import Flask
 from .models import User
-from .extensions import bootstrap, db, login_manager, csrf
+from .extensions import bootstrap, db, login_manager, csrf, sheetdb
 from .main import main_bp
 from .auth import auth_bp
 from .admin import admin_bp
@@ -15,6 +15,7 @@ def create_app(config_file="config.py"):
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
+    sheetdb.init_app(app)
 
     # Ініціалізація користувачів
     users = {app.config['ADMIN_LOGIN']: {'password': app.config['ADMIN_PASSWORD']}}

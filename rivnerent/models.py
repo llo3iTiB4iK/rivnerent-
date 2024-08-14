@@ -50,9 +50,24 @@ class Car(db.Model):
     price_26to89: Mapped[str] = mapped_column(String(20), nullable=False)
     deposit: Mapped[str] = mapped_column(String(20), nullable=False)
 
+    def get_price_for_period(self, days):
+        if 1 <= days <= 3:
+            return days * int(self.price_1to3.replace(" ₴", ""))
+        elif 4 <= days <= 9:
+            return days * int(self.price_4to9.replace(" ₴", ""))
+        elif 10 <= days <= 25:
+            return days * int(self.price_10to25.replace(" ₴", ""))
+        elif 26 <= days <= 89:
+            return days * int(self.price_26to89.replace(" ₴", ""))
+        else:
+            raise ValueError
+
 
 class AdditionalService(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     daily_price: Mapped[str] = mapped_column(String(20), nullable=False)
     max_price: Mapped[str] = mapped_column(String(20), nullable=False)
+
+    def get_price_for_period(self, days):
+        return min(int(self.daily_price.replace(" ₴", "")) * days, int(self.max_price.replace(" ₴", "")))

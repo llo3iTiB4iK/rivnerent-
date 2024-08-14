@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Selec
 from wtforms.validators import DataRequired, URL, NumberRange, Email, InputRequired, Regexp, Length
 from wtforms.widgets import CheckboxInput
 from .models import CarCategoryEnum, FuelTypeEnum, TransmissionEnum
-from datetime import date
+from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
 
@@ -50,7 +50,6 @@ class CarForm(FlaskForm):
 
 
 def validate_age(form, field):
-    print(field.data)
     date_21_years_ago = date.today() - relativedelta(years=21)
     if field.data > date_21_years_ago:
         raise ValidationError('Вам повинно бути щонайменше 21 рік')
@@ -69,3 +68,10 @@ class BookingForm(FlaskForm):
                             render_kw={"placeholder": "Введіть коментар", "rows": "5"})
     agree = BooleanField(validators=[InputRequired("Щоб оформити замовлення потрібно прийняти користувальницьку угоду")], default="checked")
     submit = SubmitField('Забронювати')
+
+    def get_rental_period(self):
+        date_format = "%d-%m-%Y %H:%M"
+        date_obtain = datetime.strptime(self.car_obtain_time.data, date_format)
+        date_return = datetime.strptime(self.car_return_time.data, date_format)
+        date_diff = date_return - date_obtain
+        return date_diff.days + (1 if date_diff.seconds > 0 else 0)

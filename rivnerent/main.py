@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import Car, CarCategoryEnum, AdditionalService
-from .extensions import db
+from .extensions import db, sheetdb
 from .forms import BookingForm
+from requests.exceptions import HTTPError
 
 main_bp = Blueprint('main', __name__)
 
@@ -55,8 +56,27 @@ def book_car():
     form = BookingForm()
     form.options.choices = [(service.id, service.name) for service in services]
     if form.validate_on_submit():
-        print(form.data)
-        return "form submitted"
+        booking_period = form.get_rental_period()
+        try:
+            rental_price = car.get_price_for_period(booking_period)
+        except ValueError:
+            return "Некоректний період прокату"
+        services_chosen = []
+        for service in services:
+            if service.id in form.data.get('options'):
+                services_chosen.append(service.name)
+                rental_price += service.get_price_for_period(booking_period)
+        column_names = sheetdb.get_column_names()
+        column_data = ['INCREMENT', car.name, f'{rental_price} ₴', car.deposit, form.data.get('car_obtain_time'), form.data.get('car_return_time'), ', '.join(services_chosen),
+                       form.data.get('full_name'), f"0{form.data.get('phone_number')}", form.data.get('birth_date').strftime('%d-%m-%Y'), form.data.get('email'), form.data.get('comment')]
+        booking = dict(zip(column_names, column_data))
+        try:
+            sheetdb.post_data(booking)
+            flash("Форма бронювання була успішно надіслана! Очікуйте дзвінок від наших менеджерів.", "success")
+            return redirect(url_for('main.all_cars'))
+        except HTTPError:
+            flash("Сталася помилка при надсиланні форми бронювання. Перевірте дані або спробуйте пізніше.", "danger")
+
     return render_template("booking.html", car=car, services=[{"id": service.id, "daily_price": service.daily_price, "max_price": service.max_price} for service in services], form=form)
 
 
