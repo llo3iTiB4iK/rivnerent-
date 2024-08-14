@@ -20,9 +20,9 @@
 
 ![зображення](https://github.com/user-attachments/assets/ec4dff2b-cedf-4bc2-a077-4ba13a1582e9)
 
-![зображення](https://github.com/user-attachments/assets/edeab07f-d33b-478a-ab60-7d325f151d36)
-
 ![зображення](https://github.com/user-attachments/assets/2f39ffb9-34b2-45ff-b436-48f5c9ef57df)
+
+![зображення](https://github.com/user-attachments/assets/edeab07f-d33b-478a-ab60-7d325f151d36)
 
 ![зображення](https://github.com/user-attachments/assets/799815e4-9c64-4c0d-b208-6896b29122d4)
 
