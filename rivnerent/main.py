@@ -73,9 +73,9 @@ def book_car():
         try:
             sheetdb.post_data(booking)
             flash("Форма бронювання була успішно надіслана! Очікуйте дзвінок від наших менеджерів.", "success")
-            return redirect(url_for('main.all_cars'))
         except HTTPError:
             flash("Сталася помилка при надсиланні форми бронювання. Перевірте дані або спробуйте пізніше.", "danger")
+        return redirect(url_for('main.all_cars'))
 
     return render_template("booking.html", car=car, services=[{"id": service.id, "daily_price": service.daily_price, "max_price": service.max_price} for service in services], form=form)
 

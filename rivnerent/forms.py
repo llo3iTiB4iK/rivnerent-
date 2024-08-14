@@ -49,7 +49,7 @@ class CarForm(FlaskForm):
     submit = SubmitField('Зберегти')
 
 
-def validate_age(form, field):
+def validate_age(_, field):
     date_21_years_ago = date.today() - relativedelta(years=21)
     if field.data > date_21_years_ago:
         raise ValidationError('Вам повинно бути щонайменше 21 рік')
@@ -62,7 +62,7 @@ class BookingForm(FlaskForm):
     full_name = StringField('Ім\'я та прізвище', validators=[MyDataRequired()], render_kw={"placeholder": "Ім'я Прізвище"})
     phone_number = TelField('Телефон', validators=[MyDataRequired(), Regexp(r'^[0-9]{9}$', message="Номер має бути у форматі +380XXXXXXXXX")],
                             render_kw={"placeholder": "123456789", "maxlength": "9"})
-    birth_date = DateField('Дата народження', validators=[validate_age])
+    birth_date = DateField('Дата народження', validators=[MyDataRequired(), validate_age])
     email = EmailField('Email', validators=[MyDataRequired(), Email("Некоректний формат електронної адреси")], render_kw={"placeholder": "123@example.com"})
     comment = TextAreaField('Коментар (необов\'язково)', validators=[Length(max=1000, message="Довжина коментаря перевищує дозволену (1000 символів)")],
                             render_kw={"placeholder": "Введіть коментар", "rows": "5"})

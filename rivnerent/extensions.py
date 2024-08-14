@@ -19,11 +19,6 @@ class SheetDBApi:
         self.endpoint = app.config['SHEETDB_URL']
         self.api_key = app.config['SHEETDB_API_KEY']
 
-    def get_data(self):
-        headers = {"Authorization": f"Bearer {self.api_key}"}
-        response = requests.get(self.endpoint, headers=headers)
-        return response.json()
-
     def get_column_names(self):
         headers = {"Authorization": f"Bearer {self.api_key}"}
         response = requests.get(f'{self.endpoint}/keys', headers=headers)
@@ -33,7 +28,6 @@ class SheetDBApi:
         headers = {"Authorization": f"Bearer {self.api_key}"}
         response = requests.post(self.endpoint, headers=headers, json=data)
         response.raise_for_status()
-        print(response.json())
 
 
 bootstrap = Bootstrap5()
