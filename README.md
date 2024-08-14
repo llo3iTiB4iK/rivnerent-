@@ -1,21 +1,43 @@
-![зображення](https://github.com/user-attachments/assets/edb6f11b-8a37-4b41-ad21-587ae68c3d10)
+![зображення](https://github.com/user-attachments/assets/39308325-71f6-4321-81a1-ec9d4225be9b)
 
-![зображення](https://github.com/user-attachments/assets/6a46217b-aaa9-4975-a823-429aa6d31869)
+![зображення](https://github.com/user-attachments/assets/9619b16e-f092-4429-b97c-e602bc67a7be)
 
-![зображення](https://github.com/user-attachments/assets/a9332d14-b00f-4503-81a9-edf0bb0f31aa)
+![зображення](https://github.com/user-attachments/assets/e0dd2602-d787-4166-aa58-beb02a6736db)
 
-![зображення](https://github.com/user-attachments/assets/0a1d8ff9-0920-4ea2-8120-eff6e2b65b3e)
+![зображення](https://github.com/user-attachments/assets/e196b964-b544-43a5-bb68-974cfe83a8bd)
 
-![зображення](https://github.com/user-attachments/assets/c915a42f-a4f7-425b-9b12-64a70332b244)
+![зображення](https://github.com/user-attachments/assets/b6e3723b-6bce-4dcc-9cb5-e56f845412f9)
 
-![зображення](https://github.com/user-attachments/assets/51ebd132-8d12-4e46-8cce-7915d67b0500)
+![зображення](https://github.com/user-attachments/assets/15c4822c-c941-4910-8e45-35da22410047)
 
-![зображення](https://github.com/user-attachments/assets/ce98a6d0-7c32-4053-aa09-743ba8774ece)
+![зображення](https://github.com/user-attachments/assets/c6010f16-e191-4094-b0b6-29b21e804be9)
 
-![зображення](https://github.com/user-attachments/assets/54a3d549-ced8-4367-b5c9-c8c1f8e66b5b)
+![зображення](https://github.com/user-attachments/assets/5ab55e97-67eb-4d88-835e-a7e49eb3db67)
 
-![зображення](https://github.com/user-attachments/assets/6447c0f4-7a6b-4ea6-90eb-2d2f4436f6cc)
+![зображення](https://github.com/user-attachments/assets/e68f0775-1652-4d7b-b57b-4cabc99611b2)
 
-![зображення](https://github.com/user-attachments/assets/dad6da48-e4fc-4aef-beb7-4d40abf3fe47)
+![зображення](https://github.com/user-attachments/assets/3ca97ce3-6fa7-4bc7-ba17-8fbec32baf09)
 
-![зображення](https://github.com/user-attachments/assets/1edecdd7-fa6c-4812-9707-28d619b82d29)
+![зображення](https://github.com/user-attachments/assets/ec4dff2b-cedf-4bc2-a077-4ba13a1582e9)
+
+![зображення](https://github.com/user-attachments/assets/2f39ffb9-34b2-45ff-b436-48f5c9ef57df)
+
+![зображення](https://github.com/user-attachments/assets/edeab07f-d33b-478a-ab60-7d325f151d36)
+
+![зображення](https://github.com/user-attachments/assets/799815e4-9c64-4c0d-b208-6896b29122d4)
+
+![зображення](https://github.com/user-attachments/assets/81063dd4-b0ce-4efc-a9da-4e64d1083b3f)
+
+![зображення](https://github.com/user-attachments/assets/0f8fa287-e9c5-4bad-8a22-a7e3606c24c5)
+
+![зображення](https://github.com/user-attachments/assets/3c9a30db-4a85-4433-926a-4e73e50c4917)
+
+![зображення](https://github.com/user-attachments/assets/0541745f-3fba-44f4-8281-8b12c8ea171c)
+
+![зображення](https://github.com/user-attachments/assets/3bd3d7f6-5bb6-4fe6-b47c-12a888e26c5b)
+
+![зображення](https://github.com/user-attachments/assets/9609cd8d-23ec-4282-8eea-756431c9af7e)
+
+![зображення](https://github.com/user-attachments/assets/594b1790-cb3d-4390-bf8a-e29b3a8a6358)
+
+![зображення](https://github.com/user-attachments/assets/14a9d0ed-bbe1-4eac-90d5-742bbf0acf3b)
